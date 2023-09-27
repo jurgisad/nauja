@@ -1,21 +1,82 @@
 #include "header.h"
-
+//------------------------------------------------------------------------------------
 int randint(int nuo, int iki) {
     return nuo + rand() % (iki - nuo + 1);
 }
+//------------------------------------------------------------------------------------
+double skaiciuotiGalutini(Studentas& studentas) {
+    double suma = 0;
+    for (int pazymys : studentas.nd) {
+        suma += pazymys;
+    }
+    int pazymiuSkaicius = studentas.nd.size();
+    return (suma / pazymiuSkaicius) * 0.4 + studentas.egz;
+}
+//------------------------------------------------------------------------------------
+double skaiciuotiMediana(Studentas& studentas) {
+    sort(studentas.nd.begin(), studentas.nd.end());
+    int pazymiuSkaicius = studentas.nd.size();
+
+    if (pazymiuSkaicius % 2 == 0) {
+        int vidurinis1 = studentas.nd[pazymiuSkaicius / 2 - 1];
+        int vidurinis2 = studentas.nd[pazymiuSkaicius / 2];
+        return (vidurinis1 + vidurinis2) / 2.0;
+    } else {
+        return studentas.nd[pazymiuSkaicius / 2];
+    }
+}
+
+//------------------------------------------------------------------------------------
+void nuskaitytiIsFailo(vector<Studentas>& studentai) {
+    ifstream input("pirmas.txt"); // Atidaryti failą skaitymui
+    if (!input.is_open()) {
+        cout << "Klaida atidarant faila!" << endl;
+        return;
+    }
+
+    string header;
+    getline(input, header); // Nuskaityti antraštę
+
+    while (!input.eof()) {
+        Studentas studentas;
+        input >> studentas.Vardas >> studentas.Pavarde;
+        for (int i = 0; i < 5; i++) {
+            int pazymys;
+            input >> pazymys;
+            studentas.nd.push_back(pazymys);
+        }
+        input >> studentas.egz;
+        studentas.galutinis = skaiciuotiGalutini(studentas);
+
+                studentas.mediana = skaiciuotiMediana(studentas);
+
+        studentai.push_back(studentas);
+    }
+
+    input.close(); // Uždaryti failą
+}
+//------------------------------------------------------------------------------------
 
 void ivestis(vector<Studentas>& studentai) {
     int pazymys;
     while (true) {
-        Studentas studentas;
+        cout << "Ar norite nuskaityti duomenis is failo? (taip - 1, ne - 0): ";
+        int choice;
+        cin >> choice;
 
-        cout << "Iveskite studento varda (Vardas): ";
-        cin >> studentas.Vardas;
+        if (choice == 1) {
+            nuskaitytiIsFailo(studentai);
+            break;
+        } else {
+            Studentas studentas;
 
-        cout << "Iveskite studento pavarde (Pavarde): ";
-        cin >> studentas.Pavarde;
+            cout << "Iveskite studento varda (Vardas): ";
+            cin >> studentas.Vardas;
 
-        // Pasirinkti ar automatiskai irasyti egzamino rezultata
+            cout << "Iveskite studento pavarde (Pavarde): ";
+            cin >> studentas.Pavarde;
+
+            // Pasirinkti ar automatiskai irasyti egzamino rezultata
         cout << "Ar norite automatiskai irasyti egzamino rezultata? (taip - 1, ne - 0): ";
         int choice1;
         cin >> choice1;
@@ -39,7 +100,7 @@ void ivestis(vector<Studentas>& studentai) {
             cin >> n;
 
             for (int i = 0; i < n; i++) {
-                pazymys = randint(1, 10); // Generate a random score between 1 and 10
+                pazymys = randint(1, 10); 
                 studentas.nd.push_back(pazymys);
             }
         } else {
@@ -55,41 +116,24 @@ void ivestis(vector<Studentas>& studentai) {
             }
         }
 
-        // Vidurkio (vidurkis) ir medianos (mediana) skaičiavimas pagal įvestį
-        double suma = 0;
-        for (int pazymys : studentas.nd) {
-            suma += pazymys;
-        }
-        int pazymiuSkaicius = studentas.nd.size();
+                studentas.galutinis = skaiciuotiGalutini(studentas);
 
-        if (pazymiuSkaicius > 0) {
-            studentas.galutinis = (suma / pazymiuSkaicius) * 0.4 + studentas.egz;
-            // Pažymiai surūšiuojami medianos skaičiavimui
-            sort(studentas.nd.begin(), studentas.nd.end());
+                studentas.mediana = skaiciuotiMediana(studentas);
 
-            if (pazymiuSkaicius % 2 == 0) {
-                // Jei yra lyginis pažymių skaičius, imamas dviejų vidurinių pažymių vidurkis
-                int vidurinis1 = studentas.nd[pazymiuSkaicius / 2 - 1];
-                int vidurinis2 = studentas.nd[pazymiuSkaicius / 2];
-                studentas.mediana = (vidurinis1 + vidurinis2) / 2.0;
-            } else {
-                // Jei yra nelyginis pažymių skaičius, imamas vidurinis pažymys
-                studentas.mediana = studentas.nd[pazymiuSkaicius / 2];
+            // Pridėti studentą į sąrašą
+            studentai.push_back(studentas);
+
+            cout << "Ar norite ivesti kita studenta? (taip - 1, ne - 0): ";
+            int choice4;
+            cin >> choice4;
+
+            if (choice4 == 0) {
+                break; // Baigti įvedimą, jei pasirinkta "ne"
             }
-        }
-
-        // Pridėti studentą į sąrašą
-        studentai.push_back(studentas);
-
-        cout << "Ar norite ivesti kita studenta? (taip - 1, ne - 0): ";
-        int choice3;
-        cin >> choice3;
-
-        if (choice3 == 0) {
-            break; // Baigti įvedimą, jei pasirinkta "ne"
         }
     }
 }
+//------------------------------------------------------------------------------------
 
 void spausdinti(vector<Studentas>& studentai) {
     // Atvaizduoti studentų duomenis
@@ -102,6 +146,7 @@ void spausdinti(vector<Studentas>& studentai) {
             (choice == 1) ? studentas.mediana : studentas.galutinis);
     }
 }
+//------------------------------------------------------------------------------------
 
 
 
