@@ -28,7 +28,7 @@ double skaiciuotiMediana(Studentas& studentas) {
 
 //------------------------------------------------------------------------------------
 void nuskaitytiIsFailo(vector<Studentas>& studentai) {
-    ifstream input("pirmas.txt"); // Atidaryti failą skaitymui
+    ifstream input("kursiokai.txt"); // Atidaryti failą skaitymui
     if (!input.is_open()) {
         cout << "Klaida atidarant faila!" << endl;
         return;
