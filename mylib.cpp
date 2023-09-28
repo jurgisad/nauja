@@ -8,9 +8,10 @@ double skaiciuotiGalutini(Studentas& studentas) {
     double suma = 0;
     for (int pazymys : studentas.nd) {
         suma += pazymys;
+
     }
     int pazymiuSkaicius = studentas.nd.size();
-    return (suma / pazymiuSkaicius) * 0.4 + studentas.egz;
+    return (suma / pazymiuSkaicius) * 0.4 + studentas.egz*0.6;
 }
 //------------------------------------------------------------------------------------
 double skaiciuotiMediana(Studentas& studentas) {
@@ -28,7 +29,7 @@ double skaiciuotiMediana(Studentas& studentas) {
 
 //------------------------------------------------------------------------------------
 void nuskaitytiIsFailo(vector<Studentas>& studentai) {
-    ifstream input("kursiokai.txt"); // Atidaryti failą skaitymui
+    ifstream input("pirmas.txt"); // Atidaryti failą skaitymui
     if (!input.is_open()) {
         cout << "Klaida atidarant faila!" << endl;
         return;
@@ -40,12 +41,17 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai) {
     while (!input.eof()) {
         Studentas studentas;
         input >> studentas.Vardas >> studentas.Pavarde;
-        for (int i = 0; i < 5; i++) {
+       while (true) {
             int pazymys;
             input >> pazymys;
+
+            if (input.fail() || input.peek() == '\n' || input.peek() == EOF) {
+                studentas.egz = pazymys; //"egz"
+                break;
+            }
+
             studentas.nd.push_back(pazymys);
         }
-        input >> studentas.egz;
         studentas.galutinis = skaiciuotiGalutini(studentas);
 
                 studentas.mediana = skaiciuotiMediana(studentas);
@@ -100,7 +106,7 @@ void ivestis(vector<Studentas>& studentai) {
             cin >> n;
 
             for (int i = 0; i < n; i++) {
-                pazymys = randint(1, 10); 
+                pazymys = randint(1, 10); // Generate a random score between 1 and 10
                 studentas.nd.push_back(pazymys);
             }
         } else {
@@ -134,19 +140,35 @@ void ivestis(vector<Studentas>& studentai) {
     }
 }
 //------------------------------------------------------------------------------------
-
+bool palyginimas(const Studentas& a, const Studentas& b) {
+    if (a.Vardas == b.Vardas) {
+        return a.Pavarde < b.Pavarde;
+    }
+    return a.Vardas < b.Vardas;
+}
+//------------------------------------------------------------------------------------
+void rikiuoti(vector<Studentas>& studentai){
+// Sort studentai
+    sort(studentai.begin(), studentai.end(), palyginimas);
+}
+//------------------------------------------------------------------------------------
 void spausdinti(vector<Studentas>& studentai) {
     // Atvaizduoti studentų duomenis
     int choice;
-    cout << "Norite naudoti meadiana ar galutini pazymi? (Mediana - 1, Galutinis - 0): ";
+    cout << "Norite naudoti mediana ar galutini pazymi? (Mediana - 1, Galutinis - 0): ";
     cin >> choice;
-    printf("%s %s %s\n", "Vardas", "Pavarde", (choice == 1) ? "Mediana" : "Galutinis");
+    printf("%-15s %-15s %s\n", "Vardas", "Pavarde", (choice == 1) ? "Mediana" : "Galutinis");
+    cout << "--------------------------------------------" << endl;
+
+
     for (const Studentas& studentas : studentai) {
-        printf("%s %s %.2f\n", studentas.Vardas.c_str(), studentas.Pavarde.c_str(),
+        printf("%-15s %-15s %.2f\n", studentas.Vardas.c_str(), studentas.Pavarde.c_str(),
             (choice == 1) ? studentas.mediana : studentas.galutinis);
     }
 }
-//------------------------------------------------------------------------------------
+
+
+//-------------------------------------------------------------------------------------
 
 
 
