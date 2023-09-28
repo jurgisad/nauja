@@ -11,7 +11,7 @@
 #include <cstdlib> // For rand() and srand() functions
 #include <ctime>   // For time() function
 #include <fstream>
-
+//-----------------------------------------------
 using std::cout;
 using std::cin;
 using std::endl;
@@ -23,12 +23,8 @@ using std::fixed;
 using std::left;
 using std::right;
 using std::setprecision;
-
-int randint(int nuo, int iki);
-
-double skaiciuotiGalutini(Studentas& studentas);
-double skaiciuotiMediana(Studentas& studentas);
-
+using std::sort;
+//-----------------------------------------------
 struct Studentas{
     string Vardas, Pavarde;
     vector <int> nd;
@@ -36,9 +32,18 @@ struct Studentas{
     double galutinis, mediana;
 };
 
+int randint(int nuo, int iki);
+
+double skaiciuotiGalutini(Studentas& studentas);
+double skaiciuotiMediana(Studentas& studentas);
+
 void nuskaitytiIsFailo(vector<Studentas>& studentai);
 
 void ivestis(vector<Studentas>& studentai);
+
+bool palyginimas(const Studentas& a, const Studentas& b);
+
+void rikiuoti(vector<Studentas>& studentai);
 
 void spausdinti(vector<Studentas>& studentai);
 
