@@ -7,6 +7,9 @@ int main() {
     // Ivesti studentus
     ivestis(studentai);
 
+    //Isrikiuoti pagal varda pavarde
+    rikiuoti(studentai);
+    
     // Atvaizduoti studentų duomenis
     spausdinti(studentai);
 
