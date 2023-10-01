@@ -24,8 +24,14 @@ using std::left;
 using std::right;
 using std::setprecision;
 using std::sort;
+using std::invalid_argument;
+using std::numeric_limits;
+using std::max;
+using std::streamsize;
+
 //-----------------------------------------------
-struct Studentas{
+struct Studentas
+{
     string Vardas, Pavarde;
     vector <int> nd;
     int egz;
@@ -39,9 +45,22 @@ double skaiciuotiMediana(Studentas& studentas);
 
 void nuskaitytiIsFailo(vector<Studentas>& studentai);
 
+char getValidInputAorB();
+
+string getValidVardasPavarde();
+
+int getValidInputND();
+
+int getValidInputNDskc();
+
+int getValidInputEgz();
+
+
 void ivestis(vector<Studentas>& studentai);
 
 bool palyginimas(const Studentas& a, const Studentas& b);
+
+bool isAlphabetic(const std::string& str);
 
 void rikiuoti(vector<Studentas>& studentai);
 
