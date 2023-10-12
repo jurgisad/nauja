@@ -11,42 +11,54 @@ double skaiciuotiGalutini(Studentas& studentas)
     for (int pazymys : studentas.nd)
     {
         suma += pazymys;
-
     }
     int pazymiuSkaicius = studentas.nd.size();
-    if (pazymiuSkaicius == 0) {
-        return studentas.egz*0.6;
-    } else{
-    return (suma / pazymiuSkaicius) * 0.4 + studentas.egz*0.6;}
+
+    try {
+        if (pazymiuSkaicius == 0) {
+            throw std::runtime_error("Dalyba is nulio, grazintas tik egzamino rezultatas.");
+        } else {
+            return (suma / pazymiuSkaicius) * 0.4 + studentas.egz * 0.6;
+        }
+    } catch (const std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
+        return studentas.egz * 0.6;; 
+    }
 }
+
 //------------------------------------------------------------------------------------
 double skaiciuotiMediana(Studentas& studentas)
 {
     sort(studentas.nd.begin(), studentas.nd.end());
     int pazymiuSkaicius = studentas.nd.size();
-    if (pazymiuSkaicius == 0) {
-        return 0.0;
+    if (pazymiuSkaicius == 0)
+    {
+        return studentas.egz*0.6;
     }
 
     if (pazymiuSkaicius % 2 == 0)
     {
         int vidurinis1 = studentas.nd[pazymiuSkaicius / 2 - 1];
         int vidurinis2 = studentas.nd[pazymiuSkaicius / 2];
-        return (vidurinis1 + vidurinis2) / 2.0;
+        return ((vidurinis1 + vidurinis2) / 2.0)*0.4+studentas.egz*0.6;
     }
     else
     {
-        return studentas.nd[pazymiuSkaicius / 2];
+        return studentas.nd[pazymiuSkaicius / 2]*0.4+studentas.egz*0.6;
     }
 }
 
 //------------------------------------------------------------------------------------
 void nuskaitytiIsFailo(vector<Studentas>& studentai)
 {
-    ifstream input("pirmas.txt"); // Atidaryti failą skaitymui
+    string failas;
+    system("dir *.txt");
+    cout<<"kuri faila naudosite?"<< endl;
+    cin>> failas;
+    ifstream input(failas); // Atidaryti failą skaitymui
     if (!input.is_open())
     {
-        cout << "Klaida atidarant faila!" << endl;
+        cerr << "Klaida atidarant faila!" << endl;
         return;
     }
 
@@ -61,7 +73,6 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai)
         {
             int pazymys;
             input >> pazymys;
-
             if (input.fail() || input.peek() == '\n' || input.peek() == EOF)
             {
                 studentas.egz = pazymys; //"egz"
@@ -80,18 +91,97 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai)
     input.close(); // Uždaryti failą
 }
 //------------------------------------------------------------------------------------
-char getValidInputAorB()
+void ived_tikr(auto &a)
 {
-    char input;
+    cin>>a;
+       do
+    {
+        try
+        {
+            if (cin.fail())
+            {
+                throw std::runtime_error("ivedete ne ta duomeni");
+
+            }
+        }
+
+        catch (const std::runtime_error& e)
+        {
+            cout<< e.what();
+            std::cin.clear();
+            std::cin.ignore(256,'\n');
+            cin>>a;
+        }
+    }
+    while (cin.fail()==true);
+}
+//------------------------------------------------------------------------------------
+void ived_tikr_a_or_b(char &a)
+{
+    while (true)
+    {
+        ived_tikr(a);
+
+        if (cin.peek() == '\n')
+        {
+            cin.ignore(); // Clear the newline character
+        }
+        else
+        {
+            cerr << "Ivestis turi buti tik vienas simbolis 'a' arba 'b'. Bandykite vel: ";
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+            continue;
+        }
+
+        if (a == 'a' || a == 'b')
+        {
+            break;
+        }
+        else
+        {
+            cerr << "Ivestis turi buti 'a' arba 'b'. Bandykite vel: ";
+        }
+    }
+}
+
+
+
+//------------------------------------------------------------------------------------
+void ived_tikr_nd(int &a)
+{
+    ived_tikr(a);
+
+    while (a < 0 || a > 11)
+    {
+        cerr << "Ivestis turi buti sveikas skaicius nuo 0 iki 11. Bandykite vel: ";
+        ived_tikr(a);
+    }
+}
+//------------------------------------------------------------------------------------
+void ived_tikr_egz(int &a)
+{
+    ived_tikr(a);
+
+    while (a < 0 || a > 10)
+    {
+        cerr << "Ivestis turi buti sveikas skaicius nuo 0 iki 10. Bandykite vel: ";
+        ived_tikr(a);
+    }
+}
+//------------------------------------------------------------------------------------
+/*string getValidInputAorB()
+{
+    string input;
 
     do
     {
         cout << "Iveskite 'a' arba 'b': ";
         cin >> input;
 
-        if (input == 'a' || input == 'b')
+        if (input.length() ==1 && (input == "a" || input == "b"))
         {
-            cout << "You pasirinkote: " << input << endl;
+            cout << "Jus pasirinkote: " << input << endl;
             return input; // Grazina gera ivesti
         }
         else
@@ -102,9 +192,9 @@ char getValidInputAorB()
         }
     }
     while (true);
-}
+}*/
 //------------------------------------------------------------------------------------
-bool isAlphabetic(const std::string& str)
+/*bool isAlphabetic(const std::string& str)
 {
     // Ar alfabetinis string
     for (char c : str)
@@ -115,9 +205,9 @@ bool isAlphabetic(const std::string& str)
         }
     }
     return true;
-}
+}*/
 //------------------------------------------------------------------------------------
-string getValidVardasPavarde()
+/*string getValidVardasPavarde()
 {
     string input;
 
@@ -138,9 +228,9 @@ string getValidVardasPavarde()
         }
     }
     while (true);
-}
+}*/
 //------------------------------------------------------------------------------------
-int getValidInputND()
+/*int getValidInputND()
 {
     string inputStr;
 
@@ -181,9 +271,9 @@ int getValidInputND()
             }
         }
     }
-}
+}*/
 //------------------------------------------------------------------------------------
-int getValidInputNDskc()
+/*int getValidInputNDskc()
 {
     string inputStr;
 
@@ -215,9 +305,9 @@ int getValidInputNDskc()
             return input;
         }
     }
-}
+}*/
 //------------------------------------------------------------------------------------
-int getValidInputEgz()
+/*int getValidInputEgz()
 {
     string inputStr;
 
@@ -258,44 +348,48 @@ int getValidInputEgz()
             }
         }
     }
-}
+}*/
 //------------------------------------------------------------------------------------
 void ivestis(vector<Studentas>& studentai)
 {
     int pazymys;
-    char choice;
+    string choice;
+
 
     while (true)
     {
         cout << "Ar norite nuskaityti duomenis is failo? (a - taip, b - ne): ";
-        choice = getValidInputAorB();
-        if (choice == 'a')
+        char choice1;
+        ived_tikr_a_or_b(choice1);
+
+        if (choice1 == 'a')
         {
             nuskaitytiIsFailo(studentai);
             break;
         }
-        else if (choice == 'b')
+        else if (choice1 == 'b')
         {
             Studentas studentas;
 
             cout << "Iveskite studento varda (Vardas): ";
-            studentas.Vardas=getValidVardasPavarde();
+            ived_tikr(studentas.Vardas);
 
             cout << "Iveskite studento pavarde (Pavarde): ";
-            studentas.Pavarde=getValidVardasPavarde();
+            ived_tikr(studentas.Pavarde);
 
             // Pasirinkti ar automatiskai irasyti egzamino rezultata
             cout << "Ar norite automatiskai irasyti egzamino rezultata? (a - taip, b - ne): ";
-            choice=getValidInputAorB();
+            char choice2;
+        ived_tikr_a_or_b(choice2);
 
-            if (choice == 'a')
+            if (choice2 == 'a')
             {
                 studentas.egz = randint(1, 10);
             }
-            else if (choice == 'b')
+            else if (choice2 == 'b')
             {
                 cout << "Iveskite studento egzamino rezultata (egz): ";
-                studentas.egz=getValidInputEgz();
+                ived_tikr_egz(studentas.egz);
             }
 
             // Pažymių (nd) įvedimas
@@ -303,12 +397,13 @@ void ivestis(vector<Studentas>& studentai)
 
             // Pasirinkti ar automatiskai pildyti namų darbus
             cout << "Ar norite automatiskai pildyti namu darbus? (a - taip, b - ne): ";
-            choice = getValidInputAorB();
-
-            if (choice == 'a')
+            char choice3;
+        ived_tikr_a_or_b(choice3);
+            if (choice3 == 'a')
             {
                 cout << "Koki kieki namu darbu sugeneruoti? ";
-          int n=getValidInputNDskc();
+                int n;
+                ived_tikr(n);
 
                 for (int i = 0; i < n; i++)
                 {
@@ -316,12 +411,12 @@ void ivestis(vector<Studentas>& studentai)
                     studentas.nd.push_back(pazymys);
                 }
             }
-            else if (choice == 'b')
+            else if (choice3 == 'b')
             {
                 while (true)
                 {
                     cout << "Iveskite pazymi (arba 11, jei norite baigti): ";
-                    pazymys=getValidInputND();
+                   ived_tikr_nd(pazymys);
                     if (pazymys == 11)
                     {
                         break; // Išeiti iš ciklo, jei įvesta 11
@@ -338,9 +433,10 @@ void ivestis(vector<Studentas>& studentai)
             studentai.push_back(studentas);
 
             cout << "Ar norite ivesti kita studenta? (a - taip, b - ne): ";
-            choice=getValidInputAorB();
+            char choice4;
+        ived_tikr_a_or_b(choice4);
 
-            if (choice == 'b')
+            if (choice4 == 'b')
             {
                 break; // Baigti įvedimą, jei pasirinkta "ne"
             }
@@ -365,21 +461,28 @@ void rikiuoti(vector<Studentas>& studentai)
 //------------------------------------------------------------------------------------
 void spausdinti(vector<Studentas>& studentai)
 {
-    // Atvaizduoti studentų duomenis
     char choice;
-    cout << "Norite naudoti mediana ar galutini pazymi? (Mediana - a, Galutinis - b): ";
-    choice=getValidInputAorB();
+    cout << "Norite naudoti mediana ar vidurki ? (Mediana - a, Vidurkis - b): ";
+    ived_tikr_a_or_b(choice);
 
-    cout << "Pasirinkote: " << choice << endl;;
-    printf("%-15s %-15s %s\n", "Vardas", "Pavarde", (choice == 'a') ? "Mediana" : "Galutinis");
-    cout << "--------------------------------------------" << endl;
+    ofstream outputFile("result.txt"); // atidaryti output faila
 
-
-    for (const Studentas& studentas : studentai)
+    if (outputFile.is_open())
     {
-        printf("%-15s %-15s %.2f\n", studentas.Vardas.c_str(), studentas.Pavarde.c_str(),
-               (choice == 'a') ? studentas.mediana : studentas.galutinis);
+        outputFile << setw(15) << left << "Vardas" << setw(15) << left << "Pavarde" << ((choice == 'a') ? "Galutinis (Med)" : "Galutinis (Vid)") << endl;
+        outputFile << "--------------------------------------------" << endl;
+
+        for (const Studentas& studentas : studentai)
+        {
+            outputFile << setw(15) << left << studentas.Vardas << setw(15) << left << studentas.Pavarde << fixed << setprecision(2) << ((choice == 'a') ? studentas.mediana : studentas.galutinis) << endl;
+        }
+
+        outputFile.close(); // uzdaryti output faila
+        cout << "Rezultatai irasyti i 'result.txt'." << endl;
+    }
+    else
+    {
+        cout << "Nepavyko atidaryto failo" << endl;
     }
 }
 //------------------------------------------------------------------------------------
-
