@@ -11,6 +11,7 @@
 #include <cstdlib> // For rand() and srand() functions
 #include <ctime>   // For time() function
 #include <fstream>
+
 //-----------------------------------------------
 using std::cout;
 using std::cin;
@@ -28,7 +29,8 @@ using std::invalid_argument;
 using std::numeric_limits;
 using std::max;
 using std::streamsize;
-
+using std::ofstream;
+using std:: cerr;
 //-----------------------------------------------
 struct Studentas
 {
@@ -45,7 +47,7 @@ double skaiciuotiMediana(Studentas& studentas);
 
 void nuskaitytiIsFailo(vector<Studentas>& studentai);
 
-char getValidInputAorB();
+string getValidInputAorB();
 
 string getValidVardasPavarde();
 
@@ -66,4 +68,11 @@ void rikiuoti(vector<Studentas>& studentai);
 
 void spausdinti(vector<Studentas>& studentai);
 
+void ived_tikr(auto &a);
+
+void ived_tikr_a_or_b(auto &a);
+
+void ived_tikr_nd(auto &a);
+
+void ived_tikr_egz(int &a);
 #endif // MYLIB_H_INCLUDED
