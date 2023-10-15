@@ -64,15 +64,13 @@ double skaiciuotiMediana(Studentas& studentas)
 }
 
 //------------------------------------------------------------------------------------
-void nuskaitytiIsFailo(vector<Studentas>& studentai)
-{
-    string failas;
+void nuskaitytiIsFailo(vector<Studentas>& studentai, string failas) {
+    /*string failas;
     system("dir *.txt");
-    cout<<"kuri faila naudosite?"<< endl;
-    cin>> failas;
+    cout << "Kuri faila naudosite?" << endl;
+    cin >> failas;*/
     ifstream input(failas); // Atidaryti failą skaitymui
-    if (!input.is_open())
-    {
+    if (!input.is_open()) {
         cerr << "Klaida atidarant faila!" << endl;
         return;
     }
@@ -80,24 +78,26 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai)
     string header;
     getline(input, header); // Nuskaityti antraštę
 
-    while (!input.eof())
-    {
+    while (!input.eof() && !input.fail()) {
         Studentas studentas;
         input >> studentas.Vardas >> studentas.Pavarde;
-        while (true)
-        {
+        if (input.fail()) {
+            break;
+        }
+
+        while (true) {
             int pazymys;
             input >> pazymys;
-            if (input.fail() || input.peek() == '\n' || input.peek() == EOF)
-            {
-                studentas.egz = pazymys; //"egz"
+
+            if (input.fail() || input.peek() == '\n' || input.peek() == EOF) {
+                studentas.egz = pazymys;
                 break;
             }
 
             studentas.nd.push_back(pazymys);
         }
-        studentas.galutinis = skaiciuotiGalutini(studentas);
 
+        studentas.galutinis = skaiciuotiGalutini(studentas);
         studentas.mediana = skaiciuotiMediana(studentas);
 
         studentai.push_back(studentas);
@@ -105,6 +105,7 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai)
 
     input.close(); // Uždaryti failą
 }
+
 //------------------------------------------------------------------------------------
 void ived_tikr(auto &a)
 {
@@ -159,9 +160,6 @@ void ived_tikr_a_or_b(char &a)
         }
     }
 }
-
-
-
 //------------------------------------------------------------------------------------
 void ived_tikr_nd(int &a)
 {
@@ -185,24 +183,34 @@ void ived_tikr_egz(int &a)
     }
 }
 //------------------------------------------------------------------------------------
-void generavimas(vector<Studentas>& studentai, int studentuskc) {
+void generavimas(int studentuskc, int namuDarbuKiekis, string failas) {
     std::mt19937 mt(std::random_device{}());
-    cout << "Koki kieki namu darbu sugeneruoti? ";
-    int n;
-    ived_tikr(n); // Assuming you have a function to input an integer
+    ofstream outputFile(failas);
 
-    for (int i = 0; i < studentuskc; i++) {
+    int columnWidth = 15;
+
+    outputFile << left << setw(columnWidth) << "Vardas" << setw(columnWidth) << "Pavarde";
+    for (int i = 1; i <= namuDarbuKiekis; i++) {
+        outputFile << setw(columnWidth) << "ND" + to_string(i);
+    }
+    outputFile << "Egz.\n";  // Add a newline character here
+
+    for (int i = 1; i <= studentuskc; i++) {
         Studentas studentas;
         studentas.Vardas = "Vardas" + to_string(i);
         studentas.Pavarde = "Pavarde" + to_string(i);
         studentas.egz = generateRandomNumber2(mt);
-        for (int ii = 0; ii < n; ii++) {
-            studentas.nd.push_back(generateRandomNumber2(mt));
+
+        outputFile << left << setw(columnWidth) << studentas.Vardas << setw(columnWidth) << studentas.Pavarde;
+        for (int j = 0; j < namuDarbuKiekis; j++) {
+            int nd = generateRandomNumber2(mt);
+            studentas.nd.push_back(nd);
+            outputFile << setw(columnWidth) << nd;
         }
-        studentas.galutinis = skaiciuotiGalutini(studentas);
-        studentas.mediana = skaiciuotiMediana(studentas);
-        studentai.push_back(studentas);
+        outputFile <<studentas.egz << '\n';  // Use single quotes to remove extra whitespace
     }
+
+    outputFile.close();
 }
 
 
@@ -227,7 +235,7 @@ else {for (const Studentas& studentas : studentai) {
 }
 }
 //------------------------------------------------------------------------------------
-void ivestis(vector<Studentas>& studentai)
+void ivestis(vector<Studentas>& studentai, string failas)
 {
     std::mt19937 mt(std::random_device{}());
     int pazymys;
@@ -242,7 +250,7 @@ void ivestis(vector<Studentas>& studentai)
 
         if (choice1 == 'a')
         {
-            nuskaitytiIsFailo(studentai);
+            nuskaitytiIsFailo(studentai, failas);
             break;
         }
         else if (choice1 == 'b')
@@ -322,20 +330,28 @@ void ivestis(vector<Studentas>& studentai)
     }
 }
 //------------------------------------------------------------------------------------
-bool palyginimas(const Studentas& a, const Studentas& b)
-{
-    if (a.Vardas == b.Vardas)
-    {
-        return a.Pavarde < b.Pavarde;
-    }
-    return a.Vardas < b.Vardas;
+void rikiuoti(vector<Studentas>& studentai, char sortBy) {
+    sort(studentai.begin(), studentai.end(), [sortBy](const Studentas& c, const Studentas& d) {
+        if (sortBy == 'V') {
+            if (c.Vardas == d.Vardas) {
+                return c.Pavarde < d.Pavarde;
+            }
+            return c.Vardas < d.Vardas;
+        }
+        else if (sortBy == 'a') { // Sort by average
+            return c.galutinis < d.galutinis;
+        }
+        else if (sortBy == 'b') { // Sort by median
+            return c.mediana < d.mediana;
+        }
+        // Default: Sort by Vardas if sortBy is not recognized
+        if (c.Vardas == d.Vardas) {
+            return c.Pavarde < d.Pavarde;
+        }
+        return c.Vardas < d.Vardas;
+    });
 }
-//------------------------------------------------------------------------------------
-void rikiuoti(vector<Studentas>& studentai)
-{
-// Sort studentai
-    sort(studentai.begin(), studentai.end(), palyginimas);
-}
+
 //------------------------------------------------------------------------------------
 void spausdinti(vector<Studentas>& studentai, string failo_pavad,char choice)
 {
@@ -361,3 +377,10 @@ void spausdinti(vector<Studentas>& studentai, string failo_pavad,char choice)
     }
 }
 //------------------------------------------------------------------------------------
+void printElapsedTime(const std::chrono::high_resolution_clock::time_point& start, const std::string& message) {
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    std::cout << message << " uztruko " << duration << " ms" << std::endl;
+}
+//
+
