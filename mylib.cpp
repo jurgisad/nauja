@@ -1,9 +1,17 @@
 #include "header.h"
 //------------------------------------------------------------------------------------
-int randint(int nuo, int iki)
-{
-    return nuo + rand() % (iki - nuo + 1);
+
+int generateRandomNumber2(std::mt19937& mt) {
+    // Define a uniform distribution for the range [0, 10]
+    std::uniform_int_distribution<int> distribution(0, 10);
+
+    // Generate a random number within the specified range
+    int random_number = distribution(mt);
+
+    return random_number;
 }
+
+
 //------------------------------------------------------------------------------------
 double skaiciuotiGalutini(Studentas& studentas)
 {
@@ -14,15 +22,22 @@ double skaiciuotiGalutini(Studentas& studentas)
     }
     int pazymiuSkaicius = studentas.nd.size();
 
-    try {
-        if (pazymiuSkaicius == 0) {
+    try
+    {
+        if (pazymiuSkaicius == 0)
+        {
             throw std::runtime_error("Dalyba is nulio, grazintas tik egzamino rezultatas.");
-        } else {
+        }
+        else
+        {
             return (suma / pazymiuSkaicius) * 0.4 + studentas.egz * 0.6;
         }
-    } catch (const std::runtime_error& e) {
+    }
+    catch (const std::runtime_error& e)
+    {
+        // Handle the division by zero error here
         std::cerr << e.what() << std::endl;
-        return studentas.egz * 0.6;; 
+        return studentas.egz * 0.6;; // You can return a default value or handle the error as needed.
     }
 }
 
@@ -94,7 +109,7 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai)
 void ived_tikr(auto &a)
 {
     cin>>a;
-       do
+    do
     {
         try
         {
@@ -170,188 +185,51 @@ void ived_tikr_egz(int &a)
     }
 }
 //------------------------------------------------------------------------------------
-/*string getValidInputAorB()
-{
-    string input;
+void generavimas(vector<Studentas>& studentai, int studentuskc) {
+    std::mt19937 mt(std::random_device{}());
+    cout << "Koki kieki namu darbu sugeneruoti? ";
+    int n;
+    ived_tikr(n); // Assuming you have a function to input an integer
 
-    do
-    {
-        cout << "Iveskite 'a' arba 'b': ";
-        cin >> input;
-
-        if (input.length() ==1 && (input == "a" || input == "b"))
-        {
-            cout << "Jus pasirinkote: " << input << endl;
-            return input; // Grazina gera ivesti
+    for (int i = 0; i < studentuskc; i++) {
+        Studentas studentas;
+        studentas.Vardas = "Vardas" + to_string(i);
+        studentas.Pavarde = "Pavarde" + to_string(i);
+        studentas.egz = generateRandomNumber2(mt);
+        for (int ii = 0; ii < n; ii++) {
+            studentas.nd.push_back(generateRandomNumber2(mt));
         }
-        else
-        {
-            cout << "Negalimas pasirinkimas, bandykite dar karta." << endl;
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Pasalina ivesties buferi
-        }
+        studentas.galutinis = skaiciuotiGalutini(studentas);
+        studentas.mediana = skaiciuotiMediana(studentas);
+        studentai.push_back(studentas);
     }
-    while (true);
-}*/
+}
+
+
 //------------------------------------------------------------------------------------
-/*bool isAlphabetic(const std::string& str)
-{
-    // Ar alfabetinis string
-    for (char c : str)
-    {
-        if (!std::isalpha(c))
-        {
-            return false;
+void isskirstymas(vector<Studentas>& studentai, vector<Studentas>& geri_studentai, vector<Studentas>& blogi_studentai, char choice) {
+    if (choice =='b'){
+    for (const Studentas& studentas : studentai) {
+        if (studentas.galutinis >= 5) {
+            geri_studentai.push_back(studentas);
+        } else {
+            blogi_studentai.push_back(studentas);
         }
     }
-    return true;
-}*/
-//------------------------------------------------------------------------------------
-/*string getValidVardasPavarde()
-{
-    string input;
-
-    do
-    {
-        cin >> input;
-
-        if (isAlphabetic(input) && input.length() >= 2)
-        {
-            cout << "You pasirinkote: " << input << endl;
-            return input; // Grazina gera ivesti
-        }
-        else
-        {
-            cout << "Negalimas pasirinkimas, bandykite dar karta naudodami tik raides" << endl;
-            cin.clear();
-            cin.ignore(std::numeric_limits<streamsize>::max(), '\n'); // Pasalina ivesties buferi
+}
+else {for (const Studentas& studentas : studentai) {
+        if (studentas.mediana >= 5) {
+            geri_studentai.push_back(studentas);
+        } else {
+            blogi_studentai.push_back(studentas);
         }
     }
-    while (true);
-}*/
-//------------------------------------------------------------------------------------
-/*int getValidInputND()
-{
-    string inputStr;
-
-    while (true)
-    {
-        cout << "Iveskite sveika skaiciu nuo 0 iki 11: ";
-        cin >> inputStr;
-
-        bool isInteger = true;
-
-        for (char c : inputStr)
-        {
-            if (!isdigit(c))
-            {
-                isInteger = false;
-                break;
-            }
-        }
-
-        if (!isInteger)
-        {
-            cout << "Netinkama ivestis, bandykite dar karta." << endl;
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-        else
-        {
-            int input = stoi(inputStr);
-            if (input < 0 || input > 11)
-            {
-                cout << "Netinkama ivestis, bandykite dar karta." << endl;
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            }
-            else
-            {
-                return input;
-            }
-        }
-    }
-}*/
-//------------------------------------------------------------------------------------
-/*int getValidInputNDskc()
-{
-    string inputStr;
-
-    while (true)
-    {
-        cout << "Iveskite skaiciu: ";
-        cin >> inputStr;
-
-        bool isInteger = true;
-
-        for (char c : inputStr)
-        {
-            if (!isdigit(c))
-            {
-                isInteger = false;
-                break;
-            }
-        }
-
-        if (!isInteger)
-        {
-            cout << "Netinkama ivestis, bandykite dar karta." << endl;
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-        else
-        {
-            int input = stoi(inputStr);
-            return input;
-        }
-    }
-}*/
-//------------------------------------------------------------------------------------
-/*int getValidInputEgz()
-{
-    string inputStr;
-
-    while (true)
-    {
-        cout << "Iveskite sveika skaiciu nuo 0 iki 10: ";
-        cin >> inputStr;
-
-        bool isInteger = true;
-
-        for (char c : inputStr)
-        {
-            if (!isdigit(c))
-            {
-                isInteger = false;
-                break;
-            }
-        }
-
-        if (!isInteger)
-        {
-            cout << "Netinkama ivestis, bandykite dar karta." << endl;
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-        else
-        {
-            int input = stoi(inputStr);
-            if (input < 0 || input > 10)
-            {
-                cout << "Netinkama ivestis, bandykite dar karta." << endl;
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            }
-            else
-            {
-                return input;
-            }
-        }
-    }
-}*/
+}
+}
 //------------------------------------------------------------------------------------
 void ivestis(vector<Studentas>& studentai)
 {
+    std::mt19937 mt(std::random_device{}());
     int pazymys;
     string choice;
 
@@ -380,11 +258,11 @@ void ivestis(vector<Studentas>& studentai)
             // Pasirinkti ar automatiskai irasyti egzamino rezultata
             cout << "Ar norite automatiskai irasyti egzamino rezultata? (a - taip, b - ne): ";
             char choice2;
-        ived_tikr_a_or_b(choice2);
+            ived_tikr_a_or_b(choice2);
 
             if (choice2 == 'a')
             {
-                studentas.egz = randint(1, 10);
+                studentas.egz = generateRandomNumber2(mt);
             }
             else if (choice2 == 'b')
             {
@@ -398,7 +276,7 @@ void ivestis(vector<Studentas>& studentai)
             // Pasirinkti ar automatiskai pildyti namų darbus
             cout << "Ar norite automatiskai pildyti namu darbus? (a - taip, b - ne): ";
             char choice3;
-        ived_tikr_a_or_b(choice3);
+            ived_tikr_a_or_b(choice3);
             if (choice3 == 'a')
             {
                 cout << "Koki kieki namu darbu sugeneruoti? ";
@@ -407,7 +285,7 @@ void ivestis(vector<Studentas>& studentai)
 
                 for (int i = 0; i < n; i++)
                 {
-                    pazymys = randint(1, 10); // Generate a random score between 1 and 10
+                    pazymys = generateRandomNumber2(mt); // Generate a random score between 1 and 10
                     studentas.nd.push_back(pazymys);
                 }
             }
@@ -416,7 +294,7 @@ void ivestis(vector<Studentas>& studentai)
                 while (true)
                 {
                     cout << "Iveskite pazymi (arba 11, jei norite baigti): ";
-                   ived_tikr_nd(pazymys);
+                    ived_tikr_nd(pazymys);
                     if (pazymys == 11)
                     {
                         break; // Išeiti iš ciklo, jei įvesta 11
@@ -434,7 +312,7 @@ void ivestis(vector<Studentas>& studentai)
 
             cout << "Ar norite ivesti kita studenta? (a - taip, b - ne): ";
             char choice4;
-        ived_tikr_a_or_b(choice4);
+            ived_tikr_a_or_b(choice4);
 
             if (choice4 == 'b')
             {
@@ -459,13 +337,10 @@ void rikiuoti(vector<Studentas>& studentai)
     sort(studentai.begin(), studentai.end(), palyginimas);
 }
 //------------------------------------------------------------------------------------
-void spausdinti(vector<Studentas>& studentai)
+void spausdinti(vector<Studentas>& studentai, string failo_pavad,char choice)
 {
-    char choice;
-    cout << "Norite naudoti mediana ar vidurki ? (Mediana - a, Vidurkis - b): ";
-    ived_tikr_a_or_b(choice);
 
-    ofstream outputFile("result.txt"); // atidaryti output faila
+    ofstream outputFile(failo_pavad); // atidaryti output faila
 
     if (outputFile.is_open())
     {
@@ -478,7 +353,7 @@ void spausdinti(vector<Studentas>& studentai)
         }
 
         outputFile.close(); // uzdaryti output faila
-        cout << "Rezultatai irasyti i 'result.txt'." << endl;
+        cout << "Rezultatai irasyti i " <<failo_pavad<< endl;
     }
     else
     {
