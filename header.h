@@ -9,7 +9,7 @@
 #include <cstdio>
 #include <algorithm>
 #include <cstdlib>
-#include <ctime>  
+#include <ctime>
 #include <fstream>
 #include <random>
 #include <chrono>
@@ -47,7 +47,7 @@ int generateRandomNumber2(std::mt19937& mt);
 double skaiciuotiGalutini(Studentas& studentas);
 double skaiciuotiMediana(Studentas& studentas);
 
-void nuskaitytiIsFailo(vector<Studentas>& studentai);
+void nuskaitytiIsFailo(vector<Studentas>& studentai, string failas);
 
 string getValidInputAorB();
 
@@ -57,7 +57,9 @@ void ivestis(vector<Studentas>& studentai);
 
 bool palyginimas(const Studentas& a, const Studentas& b);
 
-void rikiuoti(vector<Studentas>& studentai);
+bool customSort(const Studentas& a, const Studentas& b, char sortBy);
+
+void rikiuoti(vector<Studentas>& studentai, char sortBy);
 
 void spausdinti(vector<Studentas>& studentai, string failo_pavad, char choice);
 
@@ -69,7 +71,8 @@ void ived_tikr_nd(auto &a);
 
 void ived_tikr_egz(int &a);
 
-void generavimas(vector<Studentas>& studentai, int studentuskc);
+void generavimas(int studentuskc, int namuDarbuKiekis, string failas);
 
 void isskirstymas(vector<Studentas>& studentai, vector<Studentas>& geri_studentai, vector<Studentas>& blogi_studentai, char choice);
+void printElapsedTime(const std::chrono::high_resolution_clock::time_point& start, const std::string& message);
 #endif // MYLIB_H_INCLUDED
