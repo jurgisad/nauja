@@ -8,9 +8,11 @@
 #include <vector>
 #include <cstdio>
 #include <algorithm>
-#include <cstdlib> // For rand() and srand() functions
-#include <ctime>   // For time() function
+#include <cstdlib>
+#include <ctime>  
 #include <fstream>
+#include <random>
+#include <chrono>
 
 //-----------------------------------------------
 using std::cout;
@@ -31,6 +33,8 @@ using std::max;
 using std::streamsize;
 using std::ofstream;
 using std:: cerr;
+using std::to_string;
+
 //-----------------------------------------------
 struct Studentas
 {
@@ -39,9 +43,7 @@ struct Studentas
     int egz;
     double galutinis, mediana;
 };
-
-int randint(int nuo, int iki);
-
+int generateRandomNumber2(std::mt19937& mt);
 double skaiciuotiGalutini(Studentas& studentas);
 double skaiciuotiMediana(Studentas& studentas);
 
@@ -51,28 +53,23 @@ string getValidInputAorB();
 
 string getValidVardasPavarde();
 
-int getValidInputND();
-
-int getValidInputNDskc();
-
-int getValidInputEgz();
-
-
 void ivestis(vector<Studentas>& studentai);
 
 bool palyginimas(const Studentas& a, const Studentas& b);
 
-bool isAlphabetic(const std::string& str);
-
 void rikiuoti(vector<Studentas>& studentai);
 
-void spausdinti(vector<Studentas>& studentai);
+void spausdinti(vector<Studentas>& studentai, string failo_pavad, char choice);
 
 void ived_tikr(auto &a);
 
-void ived_tikr_a_or_b(auto &a);
+void ived_tikr_a_or_b(char &a);
 
 void ived_tikr_nd(auto &a);
 
 void ived_tikr_egz(int &a);
+
+void generavimas(vector<Studentas>& studentai, int studentuskc);
+
+void isskirstymas(vector<Studentas>& studentai, vector<Studentas>& geri_studentai, vector<Studentas>& blogi_studentai, char choice);
 #endif // MYLIB_H_INCLUDED
