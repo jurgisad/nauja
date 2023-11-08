@@ -235,7 +235,7 @@ else {for (const Studentas& studentas : studentai) {
 }
 }
 //------------------------------------------------------------------------------------
-void ivestis(vector<Studentas>& studentai, string failas)
+void ivestis(vector<Studentas>& studentai)
 {
     std::mt19937 mt(std::random_device{}());
     int pazymys;
@@ -244,7 +244,7 @@ void ivestis(vector<Studentas>& studentai, string failas)
 
     while (true)
     {
-        cout << "Ar norite nuskaityti duomenis is failo? (a - taip, b - ne): ";
+        /*cout << "Ar norite nuskaityti duomenis is failo? (a - taip, b - ne): ";
         char choice1;
         ived_tikr_a_or_b(choice1);
 
@@ -253,7 +253,7 @@ void ivestis(vector<Studentas>& studentai, string failas)
             nuskaitytiIsFailo(studentai, failas);
             break;
         }
-        else if (choice1 == 'b')
+        else if (choice1 == 'b')*/
         {
             Studentas studentas;
 
