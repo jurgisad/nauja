@@ -1,4 +1,5 @@
 #include "header.h"
+#include "timer.h"
 //------------------------------------------------------------------------------------
 
 int generateRandomNumber2(std::mt19937& mt) {
@@ -64,6 +65,7 @@ double skaiciuotiMediana(Studentas& studentas)
 }
 
 //------------------------------------------------------------------------------------
+//su vektoriais
 void nuskaitytiIsFailo(vector<Studentas>& studentai, string failas) {
     /*string failas;
     system("dir *.txt");
@@ -105,7 +107,46 @@ void nuskaitytiIsFailo(vector<Studentas>& studentai, string failas) {
 
     input.close(); // Uždaryti failą
 }
+//su listais
+void nuskaitytiIsFailo(list<Studentas>& studentai, string failas) {
+    ifstream input(failas); // Open the file for reading
 
+    if (!input.is_open()) {
+        cerr << "Klaida atidarant faila!" << endl;
+        return;
+    }
+
+    string header;
+    getline(input, header); // Read the header line (if there's any)
+
+    while (!input.eof() && !input.fail()) {
+        Studentas studentas;
+        input >> studentas.Vardas >> studentas.Pavarde;
+
+        if (input.fail()) {
+            break;
+        }
+
+        while (true) {
+            int pazymys;
+            input >> pazymys;
+
+            if (input.fail() || input.peek() == '\n' || input.peek() == EOF) {
+                studentas.egz = pazymys;
+                break;
+            }
+
+            studentas.nd.push_back(pazymys);
+        }
+
+        studentas.galutinis = skaiciuotiGalutini(studentas);
+        studentas.mediana = skaiciuotiMediana(studentas);
+
+        studentai.push_back(studentas);  // Add the student to the list
+    }
+
+    input.close(); // Close the file
+}
 //------------------------------------------------------------------------------------
 void ived_tikr(auto &a)
 {
@@ -215,24 +256,47 @@ void generavimas(int studentuskc, int namuDarbuKiekis, string failas) {
 
 
 //------------------------------------------------------------------------------------
-void isskirstymas(vector<Studentas>& studentai, vector<Studentas>& geri_studentai, vector<Studentas>& blogi_studentai, char choice) {
-    if (choice =='b'){
-    for (const Studentas& studentas : studentai) {
-        if (studentas.galutinis >= 5) {
-            geri_studentai.push_back(studentas);
-        } else {
-            blogi_studentai.push_back(studentas);
+
+//------------------------------------------------------------------------------------
+//Su vektoriais
+void isskirstymas(const vector<Studentas>& studentai, vector<Studentas>& geri_studentai, vector<Studentas>& blogi_studentai, char choice) {
+    if (choice == 'b') {
+        for (const Studentas& studentas : studentai) {
+            if (studentas.galutinis >= 5) {
+                geri_studentai.push_back(studentas);
+            } else {
+                blogi_studentai.push_back(studentas);
+            }
+        }
+    } else {
+        for (const Studentas& studentas : studentai) {
+            if (studentas.mediana >= 5) {
+                geri_studentai.push_back(studentas);
+            } else {
+                blogi_studentai.push_back(studentas);
+            }
         }
     }
 }
-else {for (const Studentas& studentas : studentai) {
-        if (studentas.mediana >= 5) {
-            geri_studentai.push_back(studentas);
-        } else {
-            blogi_studentai.push_back(studentas);
+//su Listais
+void isskirstymas(const list<Studentas>& studentai, list<Studentas>& geri_studentai, list<Studentas>& blogi_studentai, char choice) {
+    if (choice == 'b') {
+        for (const Studentas& studentas : studentai) {
+            if (studentas.galutinis < 5) {
+                blogi_studentai.push_back(studentas);
+            } else {
+                geri_studentai.push_back(studentas);
+            }
+        }
+    } else {
+        for (const Studentas& studentas : studentai) {
+            if (studentas.mediana < 5) {
+                blogi_studentai.push_back(studentas);
+            } else {
+                geri_studentai.push_back(studentas);
+            }
         }
     }
-}
 }
 //------------------------------------------------------------------------------------
 void ivestis(vector<Studentas>& studentai)
@@ -329,29 +393,103 @@ void ivestis(vector<Studentas>& studentai)
         }
     }
 }
+//su listais
+void ivestis(list<Studentas>& studentai) {
+    std::mt19937 mt(std::random_device{}());
+    int pazymys;
+    string choice;
+
+    while (true) {
+        Studentas studentas;
+
+        cout << "Iveskite studento varda (Vardas): ";
+        ived_tikr(studentas.Vardas);
+
+        cout << "Iveskite studento pavarde (Pavarde): ";
+        ived_tikr(studentas.Pavarde);
+
+        // Pasirinkti ar automatiskai irasyti egzamino rezultata
+        cout << "Ar norite automatiskai irasyti egzamino rezultata? (a - taip, b - ne): ";
+        char choice2;
+        ived_tikr_a_or_b(choice2);
+
+        if (choice2 == 'a') {
+            studentas.egz = generateRandomNumber2(mt);
+        } else if (choice2 == 'b') {
+            cout << "Iveskite studento egzamino rezultata (egz): ";
+            ived_tikr_egz(studentas.egz);
+        }
+
+        // Pažymių (nd) įvedimas
+        studentas.nd.clear(); // Išvalyti esamus pažymius
+
+        // Pasirinkti ar automatiskai pildyti namų darbus
+        cout << "Ar norite automatiskai pildyti namu darbus? (a - taip, b - ne): ";
+        char choice3;
+        ived_tikr_a_or_b(choice3);
+
+        if (choice3 == 'a') {
+            cout << "Koki kieki namu darbu sugeneruoti? ";
+            int n;
+            ived_tikr(n);
+
+            for (int i = 0; i < n; i++) {
+                pazymys = generateRandomNumber2(mt); // Generate a random score between 1 and 10
+                studentas.nd.push_back(pazymys);
+            }
+        } else if (choice3 == 'b') {
+            while (true) {
+                cout << "Iveskite pazymi (arba 11, jei norite baigti): ";
+                ived_tikr_nd(pazymys);
+                if (pazymys == 11) {
+                    break; // Išeiti iš ciklo, jei įvesta 11
+                }
+
+                studentas.nd.push_back(pazymys);
+            }
+        }
+
+        studentas.galutinis = skaiciuotiGalutini(studentas);
+        studentas.mediana = skaiciuotiMediana(studentas);
+
+        // Pridėti studentą į sąrašą
+        studentai.push_back(studentas);
+
+        cout << "Ar norite ivesti kita studenta? (a - taip, b - ne): ";
+        char choice4;
+        ived_tikr_a_or_b(choice4);
+
+        if (choice4 == 'b') {
+            break; // Baigti įvedimą, jei pasirinkta "ne"
+        }
+    }
+}
 //------------------------------------------------------------------------------------
 void rikiuoti(vector<Studentas>& studentai, char sortBy) {
     sort(studentai.begin(), studentai.end(), [sortBy](const Studentas& c, const Studentas& d) {
-        if (sortBy == 'V') {
-            if (c.Vardas == d.Vardas) {
-                return c.Pavarde < d.Pavarde;
-            }
-            return c.Vardas < d.Vardas;
+        if (sortBy == 'a') { // Sort by average
+            return c.mediana < d.mediana;
         }
-        else if (sortBy == 'a') { // Sort by average
+        if (sortBy == 'b') { // Sort by median
             return c.galutinis < d.galutinis;
         }
-        else if (sortBy == 'b') { // Sort by median
+        // Default: Sort by Vardas if sortBy is not recognized
+        return c.Vardas < d.Vardas; // Add this line for the default case
+    });
+}
+//su listais
+void rikiuoti(list<Studentas>& studentai, char sortBy) {
+    studentai.sort([sortBy](const Studentas& c, const Studentas& d) {
+        if (sortBy == 'a') { // Sort by average
+            return c.galutinis < d.galutinis;
+        }
+        if (sortBy == 'b') { // Sort by median
             return c.mediana < d.mediana;
         }
         // Default: Sort by Vardas if sortBy is not recognized
-        if (c.Vardas == d.Vardas) {
-            return c.Pavarde < d.Pavarde;
-        }
-        return c.Vardas < d.Vardas;
+        return c.Vardas < d.Vardas; // Add this line for the default case
     });
 }
-
 //------------------------------------------------------------------------------------
 void spausdinti(vector<Studentas>& studentai, string failo_pavad,char choice)
 {
@@ -365,7 +503,7 @@ void spausdinti(vector<Studentas>& studentai, string failo_pavad,char choice)
 
         for (const Studentas& studentas : studentai)
         {
-            outputFile << setw(15) << left << studentas.Vardas << setw(15) << left << studentas.Pavarde << fixed << setprecision(2) << ((choice == 'a') ? studentas.mediana : studentas.galutinis) << endl;
+            outputFile << setw(15) << left << studentas.Vardas << setw(15) << left << studentas.Pavarde << fixed << setprecision(2) <<  ((choice == 'a') ? studentas.mediana : studentas.galutinis)<< endl;
         }
 
         outputFile.close(); // uzdaryti output faila
@@ -376,11 +514,96 @@ void spausdinti(vector<Studentas>& studentai, string failo_pavad,char choice)
         cout << "Nepavyko atidaryto failo" << endl;
     }
 }
+//su listais
+void spausdinti(list<Studentas>& studentai, string failo_pavad, char choice) {
+    ofstream outputFile(failo_pavad); // Open the output file
+
+    if (outputFile.is_open()) {
+        outputFile << setw(15) << left << "Vardas" << setw(15) << left << "Pavarde" << ((choice == 'a') ? "Galutinis (Med)" : "Galutinis (Vid)") << endl;
+        outputFile << "--------------------------------------------" << endl;
+
+        for (auto it = studentai.begin(); it != studentai.end(); ++it) {
+            const Studentas& studentas = *it;
+            outputFile << setw(15) << left << studentas.Vardas << setw(15) << left << studentas.Pavarde
+                       << fixed << setprecision(2) << studentas.galutinis << endl;
+        }
+
+        outputFile.close(); // Close the output file
+        cout << "Rezultatai irasyti i " << failo_pavad << endl;
+    } else {
+        cout << "Nepavyko atidaryto failo" << endl;
+    }
+}
+
+
 //------------------------------------------------------------------------------------
 void printElapsedTime(const std::chrono::high_resolution_clock::time_point& start, const std::string& message) {
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     std::cout << message << " uztruko " << duration << " ms" << std::endl;
 }
-//
+void processStudentData(int numStudents, char choice) {
+    list<Studentas> studentai;
+    list<Studentas> bahurai;
+    list<Studentas> slabakai;
+    string filename = "stud_" + to_string(numStudents) + ".txt";
+
+    Timer timer;
+
+    timer.reset();
+    nuskaitytiIsFailo(studentai, filename);
+    cout << "nuskaityti truko " << timer.elapsed() << " sekundes" << endl;
+
+    timer.reset();
+    isskirstymas(studentai, bahurai, slabakai, choice);
+    cout << "isskirstymas truko " << timer.elapsed() << " sekundes" << endl;
+
+    timer.reset();
+    rikiuoti(bahurai, choice);
+    cout << "rikiuoti bahurus truko " << timer.elapsed() << " sekundes" << endl;
+
+    timer.reset();
+    rikiuoti(slabakai, choice);
+    cout << "rikiuoti slabakus truko " << timer.elapsed() << " sekundes" << endl;
+
+    timer.reset();
+    spausdinti(bahurai, "results" + to_string(numStudents) + "_11.txt", choice);
+    cout << "spausdinti bahurus i faila truko " << timer.elapsed() << " sekundes" << endl;
+
+    timer.reset();
+    spausdinti(slabakai, "results" + to_string(numStudents) + "_22.txt", choice);
+    cout << "spausdinti slabakus i faila truko " << timer.elapsed() << " sekundes" << endl;
+}
+void processStudentData_vector(int numStudents, char choice) {
+    vector<Studentas> studentai;
+    vector<Studentas> bahurai;
+    vector<Studentas> slabakai;
+    string filename = "stud_" + to_string(numStudents) + ".txt";
+
+    Timer timer;
+
+    timer.reset();
+    nuskaitytiIsFailo(studentai, filename);
+    cout << "nuskaityti truko " << timer.elapsed() << " sekundes" << endl;
+
+    timer.reset();
+    isskirstymas(studentai, bahurai, slabakai, choice);
+    cout << "isskirstymas truko " << timer.elapsed() << " sekundes" << endl;
+
+    timer.reset();
+    rikiuoti(bahurai, choice);
+    cout << "rikiuoti bahurus truko " << timer.elapsed() << " sekundes" << endl;
+
+    timer.reset();
+    rikiuoti(slabakai, choice);
+    cout << "rikiuoti slabakus truko " << timer.elapsed() << " sekundes" << endl;
+
+    timer.reset();
+    spausdinti(bahurai, "results" + to_string(numStudents) + "_1.txt", choice);
+    cout << "spausdinti bahurus i faila truko " << timer.elapsed() << " sekundes" << endl;
+
+    timer.reset();
+    spausdinti(slabakai, "results" + to_string(numStudents) + "_2.txt", choice);
+    cout << "spausdinti slabakus i faila truko " << timer.elapsed() << " sekundes" << endl;
+}
 
