@@ -13,7 +13,7 @@
 #include <fstream>
 #include <random>
 #include <chrono>
-
+#include <list>
 //-----------------------------------------------
 using std::cout;
 using std::cin;
@@ -34,7 +34,7 @@ using std::streamsize;
 using std::ofstream;
 using std:: cerr;
 using std::to_string;
-
+using std::list;
 //-----------------------------------------------
 struct Studentas
 {
@@ -48,20 +48,22 @@ double skaiciuotiGalutini(Studentas& studentas);
 double skaiciuotiMediana(Studentas& studentas);
 
 void nuskaitytiIsFailo(vector<Studentas>& studentai, string failas);
+void nuskaitytiIsFailo(list<Studentas>& studentai, string failas);
 
 string getValidInputAorB();
 
 string getValidVardasPavarde();
 
 void ivestis(vector<Studentas>& studentai);
+void ivestis(list<Studentas>& studentai);
 
 bool palyginimas(const Studentas& a, const Studentas& b);
 
-bool customSort(const Studentas& a, const Studentas& b, char sortBy);
-
 void rikiuoti(vector<Studentas>& studentai, char sortBy);
+void rikiuoti(list<Studentas>& studentai, char sortBy);
 
 void spausdinti(vector<Studentas>& studentai, string failo_pavad, char choice);
+void spausdinti(list<Studentas>& studentai, string failo_pavad, char choice);
 
 void ived_tikr(auto &a);
 
@@ -73,6 +75,10 @@ void ived_tikr_egz(int &a);
 
 void generavimas(int studentuskc, int namuDarbuKiekis, string failas);
 
-void isskirstymas(vector<Studentas>& studentai, vector<Studentas>& geri_studentai, vector<Studentas>& blogi_studentai, char choice);
+void isskirstymas(const vector<Studentas>& studentai, vector<Studentas>& geri_studentai, vector<Studentas>& blogi_studentai, char choice);
+void isskirstymas(const list<Studentas>& studentai, list<Studentas>& geri_studentai, list<Studentas>& blogi_studentai, char choice);
+
 void printElapsedTime(const std::chrono::high_resolution_clock::time_point& start, const std::string& message);
+void processStudentData(int numStudents, char choice);
+void processStudentData_vector(int numStudents, char choice);
 #endif // MYLIB_H_INCLUDED
