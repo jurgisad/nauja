@@ -4,15 +4,10 @@
 int main()
 {
     list<Studentas> studentai_ivedimas_l;
-
-    vector<vector<Studentas>> studentai(5);
-    vector<vector<Studentas>> bahurai(5);
-    vector<vector<Studentas>> slabakai(5);
     vector<Studentas> studentai_ivedimas;
     char choice;
     char choice2;
     char choice3;
-
 
     cout << "Norite naudoti mediana ar vidurki ? (Mediana - a, Vidurkis - b): ";
     ived_tikr_a_or_b(choice);
@@ -37,7 +32,7 @@ int main()
         else
         {
 
-            // Comment out or remove the generavimas lines if not needed
+            // Uncomment if needed
             // generavimas(1000, 5, "stud_1000.txt");
             // generavimas(10000, 5, "stud_10000.txt");
             // generavimas(100000, 5, "stud_100000.txt");
@@ -70,7 +65,7 @@ int main()
         else
         {
 
-            // Comment out or remove the generavimas lines if not needed
+            // Uncomment if needed
             // generavimas(1000, 5, "stud_1000.txt");
             // generavimas(10000, 5, "stud_10000.txt");
             // generavimas(100000, 5, "stud_100000.txt");
