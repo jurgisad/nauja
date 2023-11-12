@@ -308,17 +308,6 @@ void ivestis(vector<Studentas>& studentai)
 
     while (true)
     {
-        /*cout << "Ar norite nuskaityti duomenis is failo? (a - taip, b - ne): ";
-        char choice1;
-        ived_tikr_a_or_b(choice1);
-
-        if (choice1 == 'a')
-        {
-            nuskaitytiIsFailo(studentai, failas);
-            break;
-        }
-        else if (choice1 == 'b')*/
-        {
             Studentas studentas;
 
             cout << "Iveskite studento varda (Vardas): ";
@@ -481,10 +470,10 @@ void rikiuoti(vector<Studentas>& studentai, char sortBy) {
 void rikiuoti(list<Studentas>& studentai, char sortBy) {
     studentai.sort([sortBy](const Studentas& c, const Studentas& d) {
         if (sortBy == 'a') { // Sort by average
-            return c.galutinis < d.galutinis;
+            return c.mediana < d.mediana;
         }
         if (sortBy == 'b') { // Sort by median
-            return c.mediana < d.mediana;
+            return c.galutinis < d.galutinis;
         }
         // Default: Sort by Vardas if sortBy is not recognized
         return c.Vardas < d.Vardas; // Add this line for the default case
@@ -522,14 +511,14 @@ void spausdinti(list<Studentas>& studentai, string failo_pavad, char choice) {
         outputFile << setw(15) << left << "Vardas" << setw(15) << left << "Pavarde" << ((choice == 'a') ? "Galutinis (Med)" : "Galutinis (Vid)") << endl;
         outputFile << "--------------------------------------------" << endl;
 
-        for (auto it = studentai.begin(); it != studentai.end(); ++it) {
-            const Studentas& studentas = *it;
-            outputFile << setw(15) << left << studentas.Vardas << setw(15) << left << studentas.Pavarde
-                       << fixed << setprecision(2) << studentas.galutinis << endl;
+        for (const Studentas& studentas : studentai)
+        {
+            outputFile << setw(15) << left << studentas.Vardas << setw(15) << left << studentas.Pavarde << fixed << setprecision(2) <<  ((choice == 'a') ? studentas.mediana : studentas.galutinis)<< endl;
         }
 
+
         outputFile.close(); // Close the output file
-        cout << "Rezultatai irasyti i " << failo_pavad << endl;
+    cout << "Rezultatai irasyti i " << failo_pavad << endl;
     } else {
         cout << "Nepavyko atidaryto failo" << endl;
     }
@@ -599,11 +588,10 @@ void processStudentData_vector(int numStudents, char choice) {
     cout << "rikiuoti slabakus truko " << timer.elapsed() << " sekundes" << endl;
 
     timer.reset();
-    spausdinti(bahurai, "results" + to_string(numStudents) + "_1.txt", choice);
+    spausdinti(bahurai, "results" + to_string(numStudents) + "_11.txt", choice);
     cout << "spausdinti bahurus i faila truko " << timer.elapsed() << " sekundes" << endl;
 
     timer.reset();
-    spausdinti(slabakai, "results" + to_string(numStudents) + "_2.txt", choice);
+    spausdinti(slabakai, "results" + to_string(numStudents) + "_22.txt", choice);
     cout << "spausdinti slabakus i faila truko " << timer.elapsed() << " sekundes" << endl;
 }
-
