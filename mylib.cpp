@@ -588,10 +588,10 @@ void processStudentData_vector(int numStudents, char choice) {
     cout << "rikiuoti slabakus truko " << timer.elapsed() << " sekundes" << endl;
 
     timer.reset();
-    spausdinti(bahurai, "results" + to_string(numStudents) + "_11.txt", choice);
+    spausdinti(bahurai, "results" + to_string(numStudents) + "_1.txt", choice);
     cout << "spausdinti bahurus i faila truko " << timer.elapsed() << " sekundes" << endl;
 
     timer.reset();
-    spausdinti(slabakai, "results" + to_string(numStudents) + "_22.txt", choice);
+    spausdinti(slabakai, "results" + to_string(numStudents) + "_2.txt", choice);
     cout << "spausdinti slabakus i faila truko " << timer.elapsed() << " sekundes" << endl;
 }
