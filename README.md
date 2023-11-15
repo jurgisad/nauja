@@ -1,10 +1,10 @@
-*CPU* - AMD Ryzen 5 5600H with Radeon Graphics 3.30 GHZ.
-*RAM* - 16.0 GB DDR4.
-*SSD* - 1024 GB NVMe 3500 MB/s read, 3200 MB/s write.
+*CPU* - AMD Ryzen 5 5600H with Radeon Graphics 3.30 GHZ.  
+*RAM* - 16.0 GB DDR4.  
+*SSD* - 1024 GB NVMe 3500 MB/s read, 3200 MB/s write.  
 
-| Vektoriai (1)     |
-| ----------------- | -------- | -------- | -------- | -------- | -------- |
-| Duomenų skaičius  | 1000     | 10000    | 100000   | 1000000  | 10000000 |
+| Vektoriai (1)     |  
+| ----------------- | -------- | -------- | -------- | -------- | -------- |  
+| Duomenų skaičius  | 1000     | 10000    | 100000   | 1000000  | 10000000 |  
 | Nuskaitymas       | 0.003206 | 0.028501 | 0.278187 | 2.805514 | 28.23616 |
 | Išskirstymas      | 0        | 0.003375 | 0.028137 | 0.256115 | 3.111484 |
 | Gerų rikiavimas   | 0        | 0.005321 | 0.076960 | 1.002042 | 12.37794 |
