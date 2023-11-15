@@ -81,4 +81,8 @@ void isskirstymas(const list<Studentas>& studentai, list<Studentas>& geri_studen
 void printElapsedTime(const std::chrono::high_resolution_clock::time_point& start, const std::string& message);
 void processStudentData(int numStudents, char choice);
 void processStudentData_vector(int numStudents, char choice);
+
+void isskirstymas1(std::vector<Studentas>& studentai, std::vector<Studentas>& geri_studentai, char choice);
+void isskirstymas1(std::list<Studentas>& studentai, std::list<Studentas>& geri_studentai, char choice);
+
 #endif // MYLIB_H_INCLUDED
