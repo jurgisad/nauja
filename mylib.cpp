@@ -595,3 +595,35 @@ void processStudentData_vector(int numStudents, char choice) {
     spausdinti(slabakai, "results" + to_string(numStudents) + "_2.txt", choice);
     cout << "spausdinti slabakus i faila truko " << timer.elapsed() << " sekundes" << endl;
 }
+//--------------------------------------------------------------------------------------------------------------------------------------
+void isskirstymas1(vector<Studentas>& studentai, vector<Studentas>& geri_studentai, char choice) {
+    if (choice == 'b') {
+        auto partition_point = std::partition(studentai.begin(), studentai.end(),
+            [](const Studentas& studentas) { return studentas.galutinis >= 5; });
+
+        geri_studentai.insert(geri_studentai.end(), partition_point, studentai.end());
+
+        studentai.erase(partition_point, studentai.end());
+    } else {
+        auto partition_point = std::partition(studentai.begin(), studentai.end(),
+            [](const Studentas& studentas) { return studentas.mediana >= 5; });
+
+        geri_studentai.insert(geri_studentai.end(), partition_point, studentai.end());
+
+        studentai.erase(partition_point, studentai.end());
+    }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------
+void isskirstymas1(std::list<Studentas>& studentai, std::list<Studentas>& geri_studentai, char choice) {
+    if (choice == 'b') {
+        auto partition_point = std::partition(studentai.begin(), studentai.end(),
+            [](const Studentas& studentas) { return studentas.galutinis >= 5; });
+
+        geri_studentai.splice(geri_studentai.end(), studentai, partition_point, studentai.end());
+    } else {
+        auto partition_point = std::partition(studentai.begin(), studentai.end(),
+            [](const Studentas& studentas) { return studentas.mediana >= 5; });
+
+        geri_studentai.splice(geri_studentai.end(), studentai, partition_point, studentai.end());
+    }
+}
