@@ -84,5 +84,6 @@ void processStudentData_vector(int numStudents, char choice);
 
 void isskirstymas1(std::vector<Studentas>& studentai, std::vector<Studentas>& geri_studentai, char choice);
 void isskirstymas1(std::list<Studentas>& studentai, std::list<Studentas>& geri_studentai, char choice);
+void isskirstymas11(std::vector<Studentas>& studentai, std::vector<Studentas>& geri_studentai, char choice);
 
 #endif // MYLIB_H_INCLUDED
