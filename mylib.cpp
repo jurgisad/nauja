@@ -576,7 +576,7 @@ void processStudentData_vector(int numStudents, char choice) {
     cout << "nuskaityti truko " << timer.elapsed() << " sekundes" << endl;
 
     timer.reset();
-    isskirstymas(studentai, bahurai, slabakai, choice);
+    isskirstymas11(studentai, bahurai, slabakai, choice);
     cout << "isskirstymas truko " << timer.elapsed() << " sekundes" << endl;
 
     timer.reset();
@@ -626,4 +626,19 @@ void isskirstymas1(std::list<Studentas>& studentai, std::list<Studentas>& geri_s
 
         geri_studentai.splice(geri_studentai.end(), studentai, partition_point, studentai.end());
     }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------
+void isskirstymas11(vector<Studentas>& studentai, vector<Studentas>& geri_studentai, char choice) {
+    auto condition = (choice == 'b') ? [](const Studentas& studentas) { return studentas.galutinis >= 5; }
+                                      : [](const Studentas& studentas) { return studentas.mediana >= 5; };
+
+    auto partition_point = std::partition(studentai.begin(), studentai.end(), condition);
+
+    // Move elements satisfying the condition to the new vector
+    geri_studentai.insert(geri_studentai.end(),
+                          std::make_move_iterator(partition_point),
+                          std::make_move_iterator(studentai.end()));
+
+    // Erase the moved elements from the original vector
+    studentai.erase(partition_point, studentai.end());
 }
