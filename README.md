@@ -1,6 +1,20 @@
-**CPU** - AMD Ryzen 5 5600H with Radeon Graphics 3.30 GHz.
-**RAM** - 16.0 GB DDR4.
-**SSD** - 1024 GB NVMe 3500 MB/s read, 3200 MB/s write.
+**Paleidimo instrukcija:**<br>
+1. Instaliuoti CMake. <br>
+2. Instaliuoti Codeblocks ir pridėti kompiliatorio path į systemos aplinką. <br>
+3. norint sukurti projektą atskirame folderyje, naudoti tokias eilutes : <br>
+mkdir build <br>
+cd build <br>
+cmake -G "CodeBlocks - MinGW Makefiles" .. <br>
+4. Atidarius projektą paspausti build. <br>
+5. Paleisti .exe failą. <br>
+6. Norint naujų sugeneruotų failų, atkomentuoti main.cpp esančias eilutes, o prireikus orginalių, kreiptis į mane per github. <br>
+---
+Kiekvienas relizas aprašytas prie pačio relizo, tai norint naudoti senesnes versijas, skaityti ten. <br>
+---
+**TESTAVIMAS** <br>
+**CPU** - AMD Ryzen 5 5600H with Radeon Graphics 3.30 GHz. <br>
+**RAM** - 16.0 GB DDR4.<br>
+**SSD** - 1024 GB NVMe 3500 MB/s read, 3200 MB/s write. <br>
 
 ### Vektoriai (1)
 | Duomenų skaičius |   1000 |  10000 | 100000 | 1000000 | 10000000 |
@@ -21,7 +35,7 @@
 | Blogų rikiavimas |   0    | 0.0024 | 0.0327  | 0.5177   |  7.2633   |
 | Gerų įrašymas    | 0.0033 | 0.0219 | 0.2056  | 2.1298   | 20.6789   |
 | Blogų įrašymas   | 0.0025 | 0.0174 | 0.1723  | 1.8015   | 18.9043   |
-
+---
 ### Vektoriai (2)
 | Duomenų skaičius |   1000 |  10000 | 100000 | 1000000 | 10000000 |
 | ---------------- | ------ | ------ | ------- | -------- | --------- |
@@ -53,7 +67,7 @@
 | Blogų rikiavimas| #DIV/0!| 5%    | 4%      | 10%      | 5%        |
 | Gerų įrašymas   | 23%   | 11%   | 6%      | 7%       | 5%        |
 | Blogų įrašymas  | -2%   | -14%  | -5%     | -7%      | 2%        |
-
+---
 ### Vektoriai (3)
 | Duomenų skaičius |   1000 |  10000 | 100000 | 1000000 | 10000000 |
 | ---------------- | ------ | ------ | ------- | -------- | --------- |
