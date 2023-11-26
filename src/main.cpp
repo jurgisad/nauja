@@ -1,22 +1,23 @@
 #include "header.h"
 #include "timer.h"
+#include "Studentas.h"
 
 int main()
 {
-    list<Studentas> studentai_ivedimas_l;
-    vector<Studentas> studentai_ivedimas;
+    //list<Studentas> studentai_ivedimas_l;
+    //vector<Studentas> studentai_ivedimas;
     char choice;
-    char choice2;
-    char choice3;
+    //char choice2;
+    //char choice3;
 
     cout << "Norite naudoti mediana ar vidurki ? (Mediana - a, Vidurkis - b): ";
     ived_tikr_a_or_b(choice);
     cout << "Norite naudoti ivedima ranka ar generuoti failus ? (ranka - a, generuoti - b): ";
     ived_tikr_a_or_b(choice2);
-    cout << "Norite naudoti sarasus ar vektorius? (sarasus - a, vektorius - b): ";
+    //cout << "Norite naudoti sarasus ar vektorius? (sarasus - a, vektorius - b): ";
     ived_tikr_a_or_b(choice3);
 
-    if(choice3=='a')
+    /*if(choice3=='a')
     {
         if (choice2=='a')
         {
@@ -84,5 +85,15 @@ int main()
     }
     std::cout << "Press Enter to exit...";
     std::cin.get();
+    return 0;*/
+
+Timer timer;
+            for (int i = 0; i < 5; ++i)
+            {
+                int numStudents = std::pow(10, i + 3);
+                std::cout << "Laikai su " << numStudents << " studentu:" << std::endl;
+                processStudentData_class(numStudents, choice);
+            }
+
     return 0;
 }
