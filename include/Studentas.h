@@ -27,7 +27,9 @@ public:
     double skaiciuotiGalutini1();
     double skaiciuotiMediana1();
     static std::vector<Studentass> Nuskaityti(const std::string& filename);
-    ~Studentass(){};
+    ~Studentass(){
+        std::cout << "Destructor called for " << vardas_ << " " << pavarde_ << std::endl;
+    }
 };
 void spausdinti_(const std::vector<Studentass>& studentai, const std::string& failo_pavad, char choice);
 void isskirstymas111(vector<Studentass>& studentai, vector<Studentass>& geri_studentai, char choice);
