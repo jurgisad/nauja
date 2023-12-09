@@ -3,8 +3,7 @@
 #include <stdexcept>
 #include "timer.h"
 #include <iterator>
-
-
+//---------------------------------------------------------------------------------------
 double Studentass::skaiciuotiGalutini1()
 {
     double suma = std::accumulate(nd_.begin(), nd_.end(), 0.0);
@@ -18,8 +17,7 @@ double Studentass::skaiciuotiGalutini1()
 
     return (suma / pazymiuSkaicius) * 0.4 + egz_ * 0.6;
 }
-
-
+//---------------------------------------------------------------------------------------
 double Studentass::skaiciuotiMediana1()
 {
     // Ensure the vector is not empty before sorting
@@ -44,8 +42,7 @@ double Studentass::skaiciuotiMediana1()
         return nd_[pazymiuSkaicius / 2] * 0.4 + egz_ * 0.6;
     }
 }
-
-
+//---------------------------------------------------------------------------------------
 std::vector<Studentass> Studentass::Nuskaityti(const std::string& filename) {
     std::vector<Studentass> students;
     std::ifstream file(filename);
@@ -72,11 +69,7 @@ std::vector<Studentass> Studentass::Nuskaityti(const std::string& filename) {
     file.close();
     return students;
 }
-
-
-
-
-
+//---------------------------------------------------------------------------------------
 std::istream& operator>>(std::istream& in, Studentass& student) {
     in >> student.vardas_ >> student.pavarde_;
 
@@ -89,7 +82,6 @@ std::istream& operator>>(std::istream& in, Studentass& student) {
         in >> grade;
 
         if (in.fail() || in.peek() == '\n' || in.peek() == EOF) {
-            student.nd_.push_back(grade); // Add the last grade to nd_
             student.egz_ = grade;  // Set egz_ to the last grade
             break;
         }
@@ -102,7 +94,20 @@ std::istream& operator>>(std::istream& in, Studentass& student) {
 
     return in;
 }
+//-------------------------------------------------------------------------------
+std::ostream& operator<<(std::ostream& out, const Studentass& student) {
+        out << setw(15) << left << student.vardas_
+            << setw(15) << left << student.pavarde_;
+        for (const double& ndValue : student.nd_) {
+            out << " " << ndValue;
+        }
+        out<< setw(15) << left << student.egz_;
 
+        out << fixed << setprecision(2) << " " << student.galutinis_
+            << " " << student.mediana_;
+
+        return out;
+    }
 //-------------------------------------------------------------------------------
 void spausdinti_(const std::vector<Studentass>& studentai, const std::string& failo_pavad, char choice) {
     std::ofstream outputFile(failo_pavad); // Open the output file
