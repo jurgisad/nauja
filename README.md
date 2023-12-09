@@ -1,3 +1,7 @@
+Informacija apie nuodojamas funkcijas.  
+Įvedant duomenis apie studentą, pirmas duomuo yra vardas, antras pavardė, o visi kiti yra skaičiai - namų darbai, o pats paskutinis nuskaitomas kaip egzaminas, tuomet apsakaičiuojami galutiniai balai.
+Galima rinktis, ar duomenis suvesti pačiam ar naudoti sugeneruotus failus arba net naujai generuoti failus. Norint spausdinti duomenis apie studento klasės objektą galima naudoti išvesties operatorių. Klasė turi destruktorių, bet kadangi naudojami vektoriai, int bei string reikšmės, kurios pačios tvarkosi su informacijos valymu, tai destruktorius neatlieka papildomų veiksmų.
+---
 **Paleidimo instrukcija:**<br>
 1. Instaliuoti CMake. <br>
 2. Instaliuoti Codeblocks ir pridėti kompiliatorio path į systemos aplinką. <br>
