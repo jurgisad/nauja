@@ -13,7 +13,7 @@ double Studentass::skaiciuotiGalutini1()
     if (pazymiuSkaicius == 0)
     {
         std::cerr << "Dalyba is nulio, grazintas tik egzamino rezultatas." << std::endl;
-        return egz_ * 0.6; // You can return a default value or handle the error as needed.
+        return egz_ * 0.6; 
     }
 
     return (suma / pazymiuSkaicius) * 0.4 + egz_ * 0.6;
@@ -22,13 +22,11 @@ double Studentass::skaiciuotiGalutini1()
 
 double Studentass::skaiciuotiMediana1()
 {
-    // Ensure the vector is not empty before sorting
     if (nd_.empty())
     {
         return egz_ * 0.6;
     }
-
-    // Sort the vector
+    
     std::sort(nd_.begin(), nd_.end());
 
     int pazymiuSkaicius = nd_.size();
@@ -52,21 +50,21 @@ std::vector<Studentass> Studentass::Nuskaityti(const std::string& filename) {
 
     if (!file.is_open()) {
         std::cerr << "Unable to open file: " << filename << std::endl;
-        return students; // Return an empty vector in case of an error
+        return students; 
     }
 
     std::string header;
-    std::getline(file, header);  // Read and discard the header
+    std::getline(file, header); 
 
     while (true) {
         Studentass student;
-        file >> student;  // Use the input operator to read a student
+        file >> student;  
 
         if (file.fail()) {
-            break;  // Break if reading fails (possibly end of file)
+            break;  
         }
 
-        students.push_back(student);  // Add the student to the vector
+        students.push_back(student); 
     }
 
     file.close();
@@ -75,13 +73,11 @@ std::vector<Studentass> Studentass::Nuskaityti(const std::string& filename) {
 
 
 
-
-
 std::istream& operator>>(std::istream& in, Studentass& student) {
     in >> student.vardas_ >> student.pavarde_;
 
     if (in.fail()) {
-        return in;  // Return the stream to indicate failure
+        return in; 
     }
 
     while (true) {
@@ -89,8 +85,8 @@ std::istream& operator>>(std::istream& in, Studentass& student) {
         in >> grade;
 
         if (in.fail() || in.peek() == '\n' || in.peek() == EOF) {
-            student.nd_.push_back(grade); // Add the last grade to nd_
-            student.egz_ = grade;  // Set egz_ to the last grade
+            student.nd_.push_back(grade); 
+            student.egz_ = grade; 
             break;
         }
 
@@ -105,7 +101,7 @@ std::istream& operator>>(std::istream& in, Studentass& student) {
 
 //-------------------------------------------------------------------------------
 void spausdinti_(const std::vector<Studentass>& studentai, const std::string& failo_pavad, char choice) {
-    std::ofstream outputFile(failo_pavad); // Open the output file
+    std::ofstream outputFile(failo_pavad); 
 
     if (outputFile.is_open()) {
         outputFile << std::setw(15) << std::left << "Vardas"
@@ -120,7 +116,7 @@ void spausdinti_(const std::vector<Studentass>& studentai, const std::string& fa
                        << ((choice == 'a') ? studentas.mediana() : studentas.galutinis()) << std::endl;
         }
 
-        outputFile.close(); // Close the output file
+        outputFile.close();
        // std::cout << "Rezultatai irasyti i " << failo_pavad << std::endl;
     } else {
         std::cout << "Nepavyko atidaryti failo" << std::endl;
@@ -148,8 +144,7 @@ void rikiuoti_(vector<Studentass>& studentai, char sortBy) {
         if (sortBy == 'b') { // Sort by median
             return c.galutinis() < d.galutinis();
         }
-        // Default: Sort by Vardas if sortBy is not recognized
-        return c.vardas() < d.vardas(); // Add this line for the default case
+        return c.vardas() < d.vardas();
     });
 }
 //-----------------------------------------------------------------------------------------
