@@ -165,28 +165,28 @@ void processStudentData_class(int numStudents, char choice) {
     Timer timer;
 
     timer.reset();
-    studentai=Studentass::Nuskaityti(filename);
-    cout << timer.elapsed()  << endl;
+    studentai = Studentass::Nuskaityti(filename);
+    cout << "Nuskaityti truko " << timer.elapsed() << " sekundes" << endl;
 
     timer.reset();
     isskirstymas111(studentai, bahurai, choice);
-    cout  << timer.elapsed()  << endl;
+    cout << "Isskirstymas truko " << timer.elapsed() << " sekundes" << endl;
 
     timer.reset();
     rikiuoti_(bahurai, choice);
-    cout  << timer.elapsed()  << endl;
+    cout << "Rikiuoti bahurus truko " << timer.elapsed() << " sekundes" << endl;
 
     timer.reset();
     rikiuoti_(studentai, choice);
-    cout  << timer.elapsed()  << endl;
+    cout << "Rikiuoti slabakus truko " << timer.elapsed() << " sekundes" << endl;
 
     timer.reset();
     spausdinti_(bahurai, "results_" + to_string(numStudents) + "_1.txt", choice);
-    cout  << timer.elapsed()  << endl;
+    cout << "Spausdinti bahurus i faila truko " << timer.elapsed() << " sekundes" << endl;
 
     timer.reset();
     spausdinti_(studentai, "results_" + to_string(numStudents) + "_2.txt", choice);
-    cout << timer.elapsed() <<  endl;
+    cout << "Spausdinti slabakus i faila truko " << timer.elapsed() << " sekundes" << endl;
 }
 
 
