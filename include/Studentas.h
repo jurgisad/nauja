@@ -2,34 +2,35 @@
 #define STUDENTAS_H_INCLUDED
 #include "header.h"
 #include "timer.h"
+#include "Zmogus.h"
 
-class Studentass
+class Studentass : public Zmogus
 {
 private:
-    std::string vardas_;
-    std::string pavarde_;
     int egz_;
     std::vector<int> nd_;
     double galutinis_, mediana_;
-
 public:
-    Studentass(const std::string& vardas, const std::string& pavarde, const std::vector<int>& nd, int egz)
-        : vardas_(vardas), pavarde_(pavarde), egz_(egz), nd_(nd)
+Studentass(const std::string& vardas, const std::string& pavarde, const std::vector<int>& nd, int egz)
+        : Zmogus(vardas, pavarde), egz_(egz), nd_(nd)
     {
         galutinis_ = skaiciuotiGalutini1();
         mediana_ = skaiciuotiMediana1();
-    };
+    }
+
+    // Copy Constructor
     Studentass(const Studentass& other)
-        : vardas_(other.vardas_), pavarde_(other.pavarde_), egz_(other.egz_), nd_(other.nd_),
+        : Zmogus(other), egz_(other.egz_), nd_(other.nd_),
           galutinis_(other.galutinis_), mediana_(other.mediana_)
     {
     }
+
+    // Assignment Operator
     Studentass& operator=(const Studentass& other)
     {
         if (this != &other)
         {
-            vardas_ = other.vardas_;
-            pavarde_ = other.pavarde_;
+            Zmogus::operator=(other);
             egz_ = other.egz_;
             nd_ = other.nd_;
             galutinis_ = other.galutinis_;
@@ -37,7 +38,8 @@ public:
         }
         return *this;
     }
-    Studentass() : egz_(0), galutinis_(0), mediana_(0) {}
+
+    Studentass() : Zmogus(), egz_(0), galutinis_(0), mediana_(0) {}
     inline std::string vardas() const
     {
         return vardas_;
