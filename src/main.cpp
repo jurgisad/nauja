@@ -27,16 +27,16 @@ int main()
             while (choice4=='a')
             {
                 Studentass student;
-                cout << "Iveskti studento informacija (vardas pavarde nd1 nd2 ... egz): ";
+                cout << "Enter student information (vardas pavarde nd1 nd2 ... egz): ";
                 cin >> student;
                 if (!cin.fail())
                 {
-                    cout << "Informacija issaugota\n" <<  endl;
+                    cout << "Student information entered\n" <<  endl;
                     studentai_ivedimas_c.push_back(student);
                 }
                 else
                 {
-                    std::cerr << "Klaida ivedant studenta" << std::endl;
+                    std::cerr << "Error reading student information." << std::endl;
                 }
 
                 cout<<"Ar norite ivesti kita studenta? (Taip - a, Ne - b)"<< endl;
@@ -72,13 +72,18 @@ int main()
         {
             ivestis(studentai_ivedimas_s);
 
+
             rikiuoti(studentai_ivedimas_s, choice);
+
 
             spausdinti(studentai_ivedimas_s,"ranka_rezultat_s",choice);
 
         }
         else
         {
+
+
+
             // Comment out or remove the generavimas lines if not needed
             // generavimas(1000, 5, "stud_1000.txt");
             // generavimas(10000, 5, "stud_10000.txt");
