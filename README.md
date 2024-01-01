@@ -119,7 +119,7 @@ Kiekvienas relizas aprašytas prie pačio relizo, tai norint naudoti senesnes ve
 | Suma             | 128%  | 148%   | 139%    |  
 ---
 ### Flagu greiciai
-|                    | O1 Size 214KB |           | O2 Size 220KB |            | O3 Size 236KB |            |
+|                    | O1 Size 214KB             | O2 Size 220KB              | O3 Size 236KB              |
 |--------------------|---------------|-----------|:-------------:|:----------:|:-------------:|:----------:|
 |                    | 100000        | 1000000   | 10000         | 100000     | 100000        | 1000000    |
 | Nuskaitymas        | 0.162518      | 1.58791   | 0.167998      | 1.574875   | 0.156307      | 1.580305   |
@@ -129,4 +129,6 @@ Kiekvienas relizas aprašytas prie pačio relizo, tai norint naudoti senesnes ve
 | Gerų įrašymas      | 0.183743      | 1.83334   | 0.181664      | 1.80463    | 0.171763      | 1.805285   |
 | Blogų įrašymas     | 0.169567      | 1.793667  | 0.171548      | 1.792085   | 0.176815      | 1.778115   |
 | Suma               | 0.56394       | 5.916302  | 0.573771      | 5.8924596  | 0.566176      | 5.891169   |
+
+
 
