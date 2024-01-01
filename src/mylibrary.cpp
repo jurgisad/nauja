@@ -556,7 +556,7 @@ void printElapsedTime(const std::chrono::high_resolution_clock::time_point& star
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     std::cout << message << " uztruko " << duration << " ms" << std::endl;
 }
-void processStudentData(int numStudents, char choice) {
+/*void processStudentData(int numStudents, char choice) {
     list<Studentas> studentai;
     list<Studentas> bahurai;
    // list<Studentas> slabakai;
@@ -619,8 +619,8 @@ void processStudentData_vector(int numStudents, char choice) {
     timer.reset();
     spausdinti(studentai, "results" + to_string(numStudents) + "_2.txt", choice);
     cout << timer.elapsed() <<  endl;
-}
-/*void processStudentData(int numStudents, char choice) {
+}*/
+void processStudentData(int numStudents, char choice) {
     list<Studentas> studentai;
     list<Studentas> bahurai;
     list<Studentas> slabakai;
@@ -683,7 +683,7 @@ void processStudentData_vector(int numStudents, char choice) {
     timer.reset();
     spausdinti(studentai, "results" + to_string(numStudents) + "_22.txt", choice);
     cout << "spausdinti slabakus i faila truko " << timer.elapsed() << " sekundes" << endl;
-}*/
+}
 //-------------------------------------------------------------------------------------------------------//Su vektoriais
 void isskirstymas1(vector<Studentas>& studentai, vector<Studentas>& geri_studentai, char choice) {
     if (choice == 'b') {
